@@ -5,13 +5,23 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="Access-Control-Allow-Origin" content="null">
+		<script>
+			const log = console.log.bind(console);
+			console.log = (line) =>{
+				log(line);
+				const div = document.createElement("div")
+				div.innerHTML = line;
+				document.body.appendChild(div);
+			};
+		</script>
 		<script src="tape.js" type="text/javascript"></script>
-		<script type="module" src="./e2e.js"></script>
+		
+		<script type="module" src="./client.js"></script>
+		<script type="module" src="./context.js"></script>
 		<script type="module" src="./iv.js"></script>
 		<script type="module" src="./header.js"></script>
 		<script type="module" src="./ecdsa.js"></script>
-		
-		
+	
 	</head>
 	<body>
 		
