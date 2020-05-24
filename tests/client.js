@@ -25,7 +25,7 @@ tape.test("context", async function(suite){
 		await client.setRecieverEncryptionKey(1,shared);
 		await client.setRecieverVerifyKey(1,keyPair.publicKey);
 		await client.deleteReceiver();
-		await client.close()
+		await client.close();
 		test.pass();
 		
 	});

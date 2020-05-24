@@ -1,5 +1,5 @@
 //Get worker url
-const url = new URL(import.meta.url).pathname.replace("Client","Worker")
+const url = new URL(import.meta.url).pathname.replace("Client","Worker");
 
 async function transferKey(key)
 {
@@ -10,10 +10,12 @@ async function transferKey(key)
 	return new ArrayBuffer(key);
 }
 
-class Client
+class Client extends EventTarget
 {
 	constructor()
 	{
+		 super();
+		 
 		//Create new worker
 		this.worker = new Worker(url, {type: "module"});
 		
@@ -39,6 +41,9 @@ class Client
 				else
 					//Resolve promise
 					transaction.resolve(data.result);
+			} else if (data.event) {
+				//Disptach event
+				this.dispatchEvent(new Event(data.event.name, data.event.data));
 			}
 		});
 		//Private method
