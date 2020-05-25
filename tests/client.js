@@ -22,8 +22,8 @@ tape.test("context", async function(suite){
 		await client.ratchetSenderEncryptionKey();
 		await client.setSenderSigningKey(keyPair.privateKey);
 		await client.addReceiver(1);
-		await client.setRecieverEncryptionKey(1,shared);
-		await client.setRecieverVerifyKey(1,keyPair.publicKey);
+		await client.setReceiverEncryptionKey(1,shared);
+		await client.setReceiverVerifyKey(1,keyPair.publicKey);
 		await client.deleteReceiver();
 		await client.close();
 		test.pass();

@@ -23,8 +23,8 @@ tape.test("context", async function(suite){
 		await sender.setSenderSigningKey (keyPair.privateKey);
 		
 		receiver.addReceiver(0);
-		await receiver.setRecieverEncryptionKey(0,shared);
-		await receiver.setRecieverVerifyKey(0,keyPair.publicKey);
+		await receiver.setReceiverEncryptionKey(0,shared);
+		await receiver.setReceiverVerifyKey(0,keyPair.publicKey);
 		
 		///Should encrypt and sign
 		for (let i=0;i<100;++i)
@@ -57,8 +57,8 @@ tape.test("context", async function(suite){
 		await sender.setSenderSigningKey (keyPair.privateKey);
 		
 		receiver.addReceiver(0);
-		await receiver.setRecieverEncryptionKey(0,shared);
-		await receiver.setRecieverVerifyKey(0,keyPair.publicKey);
+		await receiver.setReceiverEncryptionKey(0,shared);
+		await receiver.setReceiverVerifyKey(0,keyPair.publicKey);
 		
 		///Should encrypt and sign
 		for (let i=0;i<100;++i)
@@ -87,8 +87,8 @@ tape.test("context", async function(suite){
 		
 		receiver.addReceiver(1);
 		receiver.addReceiver(2);
-		await receiver.setRecieverEncryptionKey(1,shared1);
-		await receiver.setRecieverEncryptionKey(2,shared2);
+		await receiver.setReceiverEncryptionKey(1,shared1);
+		await receiver.setReceiverEncryptionKey(2,shared2);
 		
 		const frame1 = Utils.fromHex("cacadebaca1");
 		const encrypted1 = await sender1.encrypt("audio",0,frame1);
@@ -119,8 +119,8 @@ tape.test("context", async function(suite){
 		receiver.addReceiver(1);
 		receiver.addReceiver(2);
 		//We exchange the keys to force fail
-		await receiver.setRecieverEncryptionKey(1,shared2);
-		await receiver.setRecieverEncryptionKey(2,shared1);
+		await receiver.setReceiverEncryptionKey(1,shared2);
+		await receiver.setReceiverEncryptionKey(2,shared1);
 		
 		const frame1 = Utils.fromHex("cacadebaca1");
 		const encrypted1 = await sender1.encrypt("audio",0,frame1);
@@ -159,8 +159,8 @@ tape.test("context", async function(suite){
 		await sender.setSenderSigningKey (keyPair.privateKey);
 		
 		receiver.addReceiver(0);
-		await receiver.setRecieverEncryptionKey(0,shared);
-		await receiver.setRecieverVerifyKey(0,keyPair.publicKey);
+		await receiver.setReceiverEncryptionKey(0,shared);
+		await receiver.setReceiverVerifyKey(0,keyPair.publicKey);
 		
 		///Should encrypt and sign
 		for (let i=0;i<5;++i)
@@ -196,8 +196,8 @@ tape.test("context", async function(suite){
 		await sender.setSenderSigningKey (keyPair.privateKey);
 		
 		receiver.addReceiver(0);
-		await receiver.setRecieverEncryptionKey(0,shared);
-		await receiver.setRecieverVerifyKey(0,keyPair.publicKey);
+		await receiver.setReceiverEncryptionKey(0,shared);
+		await receiver.setReceiverVerifyKey(0,keyPair.publicKey);
 		
 		///Should encrypt and sign
 		for (let i=0;i<5;++i)

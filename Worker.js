@@ -1,4 +1,5 @@
 import {Context} from "./lib/Context.js";
+import {Utils} from "./lib/Utils.js";
 
 let context; 
 
@@ -27,12 +28,16 @@ onmessage = async (event) => {
 				//Create transform stream foo encrypting
 				const transformStream = new TransformStream({
 					transform: async (chunk, controller)=>{
-						//encrypt
-						const encrypted = await context.encrypt(kind, id, chunk.data);
-						//Set back encrypted payload
-						chunk.data = encrypted.buffer;
-						//write back
-						controller.enqueue(chunk);
+						try {
+							//encrypt
+							const encrypted = await context.encrypt(kind, id, chunk.data);
+							//if (kind=="video") console.log("encrypted " + encrypted.frameId + " "+ Utils.toHex(await crypto.subtle.digest("SHA-1", chunk.data)));
+							//Set back encrypted payload
+							chunk.data = encrypted.buffer;
+							//write back
+							controller.enqueue(chunk);
+						} catch (e) {
+						}
 					}
 				});
 				//Encrypt
@@ -50,25 +55,29 @@ onmessage = async (event) => {
 				//Create transform stream for encrypting
 				const transformStream = new TransformStream({
 					transform: async (chunk, controller)=>{
-						//decrypt
-						const decrypted = await context.decrypt(kind, id, chunk.data);
-						//Set back decrypted payload
-						chunk.data = decrypted.buffer;
-						//write back
-						controller.enqueue(chunk);
-						//If it is a sender
-						if (decrypted.senderId!=senderId)
-						{
-							//Store it
-							senderId = decrypted.senderId;
-							//Launch event
-							postMessage ({event: {
-								name	: "authenticated",
-								data	: {
-									id	 : id,
-									senderId : senderId
-								}
-							}});
+						try {
+							//decrypt
+							const decrypted = await context.decrypt(kind, id, chunk.data);
+							//Set back decrypted payload
+							chunk.data = decrypted.buffer;
+							//if (kind=="video") console.log("decrypt " + decrypted.frameId + " "+ Utils.toHex(await crypto.subtle.digest("SHA-1", chunk.data)));
+							//write back
+							controller.enqueue(chunk);
+							//If it is a sender
+							if (decrypted.senderId!=senderId)
+							{
+								//Store it
+								senderId = decrypted.senderId;
+								//Launch event
+								postMessage ({event: {
+									name	: "authenticated",
+									data	: {
+										id	 : id,
+										senderId : senderId
+									}
+								}});
+							}
+						} catch (e) {
 						}
 					}
 				});

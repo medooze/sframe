@@ -87,16 +87,16 @@ class Client extends EventTarget
 		return this.postMessage("addReceiver", [receiverkKeyId]);
 	}
 	
-	async setRecieverEncryptionKey(receiverkKeyId,key)
+	async setReceiverEncryptionKey(receiverkKeyId,key)
 	{
 		const transfered = await transferKey(key);
-		return this.postMessage("setRecieverEncryptionKey", [receiverkKeyId, transfered], [transfered]);
+		return this.postMessage("setReceiverEncryptionKey", [receiverkKeyId, transfered], [transfered]);
 	}
 	
-	async setRecieverVerifyKey(receiverkKeyId,key)
+	async setReceiverVerifyKey(receiverkKeyId,key)
 	{
 		const transfered = await transferKey(key);
-		return this.postMessage("setRecieverVerifyKey", [receiverkKeyId, transfered], [transfered]);
+		return this.postMessage("setReceiverVerifyKey", [receiverkKeyId, transfered], [transfered]);
 	}
 	
 	deleteReceiver(receiverkKeyId)
