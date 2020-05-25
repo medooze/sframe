@@ -26,11 +26,11 @@ onmessage = async (event) => {
 				const{id, kind, readableStream, writableStream} = args;
 				//Create transform stream foo encrypting
 				const transform = new TransformStream({
-					transform: async (chunk)=>{
+					transform: async (chunk, controller)=>{
 						//encrypt
 						const encrypted = await context.encrypt(kind, id, chunk.data);
 						//Set back encrypted payload
-						chunk.data = encrypted;
+						chunk.data = encrypted.buffer;
 						//write back
 						controller.enqueue(chunk);
 					}
@@ -51,11 +51,11 @@ onmessage = async (event) => {
 						//Last reveiced senderId
 						this.senderId = -1;
 					},
-					transform: async (chunk)=>{
+					transform: async (chunk, controller)=>{
 						//decrypt
 						const decrypted = await context.decrypt(kind, id, chunk.data);
 						//Set back decrypted payload
-						chunk.data = decrypted;
+						chunk.data = decrypted.buffer;
 						//write back
 						controller.enqueue(chunk);
 						//If it is a sender
