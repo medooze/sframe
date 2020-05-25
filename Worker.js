@@ -43,14 +43,12 @@ onmessage = async (event) => {
 			}
 			case "decrypt":
 			{
+				//Last reveiced senderId
+				let senderId = -1;
 				//Get event data
 				const{id, kind, readableStream,writableStream} = args;
 				//Create transform stream for encrypting
 				const transformStream = new TransformStream({
-					start: ()=>{
-						//Last reveiced senderId
-						transformStream.senderId = -1;
-					},
 					transform: async (chunk, controller)=>{
 						//decrypt
 						const decrypted = await context.decrypt(kind, id, chunk.data);
@@ -59,16 +57,16 @@ onmessage = async (event) => {
 						//write back
 						controller.enqueue(chunk);
 						//If it is a sender
-						if (decrypted.senderId!=transformStream.senderId)
+						if (decrypted.senderId!=senderId)
 						{
 							//Store it
-							transform.senderId = decrypted.senderId;
+							senderId = decrypted.senderId;
 							//Launch event
 							postMessage ({event: {
 								name	: "authenticated",
 								data	: {
 									id	 : id,
-									senderId : transformStream.senderId
+									senderId : senderId
 								}
 							}});
 						}
