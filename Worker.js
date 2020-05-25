@@ -37,7 +37,7 @@ onmessage = async (event) => {
 				});
 				//Encrypt
 				readableStream
-					.pipeThrough(transform)
+					.pipeThrough(transformStream)
 					.pipeTo(writableStream);
 				break;
 			}
