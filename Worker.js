@@ -25,7 +25,7 @@ onmessage = async (event) => {
 				//Get event data
 				const{id, kind, readableStream, writableStream} = args;
 				//Create transform stream foo encrypting
-				const transform = new TransformStream({
+				const transformStream = new TransformStream({
 					transform: async (chunk, controller)=>{
 						//encrypt
 						const encrypted = await context.encrypt(kind, id, chunk.data);
@@ -46,10 +46,10 @@ onmessage = async (event) => {
 				//Get event data
 				const{id, kind, readableStream,writableStream} = args;
 				//Create transform stream for encrypting
-				const transform = new TransformStream({
+				const transformStream = new TransformStream({
 					start: ()=>{
 						//Last reveiced senderId
-						this.senderId = -1;
+						transformStream.senderId = -1;
 					},
 					transform: async (chunk, controller)=>{
 						//decrypt
@@ -59,16 +59,16 @@ onmessage = async (event) => {
 						//write back
 						controller.enqueue(chunk);
 						//If it is a sender
-						if (decrypted.senderId!=this.senderId)
+						if (decrypted.senderId!=transformStream.senderId)
 						{
 							//Store it
-							this.senderId = decrypted.senderId;
+							transform.senderId = decrypted.senderId;
 							//Launch event
 							postMessage ({event: {
 								name	: "authenticated",
 								data	: {
 									id	 : id,
-									senderId : this.senderId
+									senderId : transformStream.senderId
 								}
 							}});
 						}
@@ -76,7 +76,7 @@ onmessage = async (event) => {
 				});
 				//Decrypt
 				readableStream
-					.pipeThrough(transform)
+					.pipeThrough(transformStream)
 					.pipeTo(writableStream);
 				break;
 			}
