@@ -7,7 +7,7 @@ class TaskQueue
 	constructor()
 	{
 		this.tasks = [];
-		this.tunning = false;
+		this.running = false;
 	}
 	
 	enqueue(promise,callback,error)
