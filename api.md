@@ -13,9 +13,10 @@ This method will create client which communicates with web worker in which the S
 ### Parameters
 
 -   `senderId` **[Number][1]** Numeric id for this sender.
--   `config` **[Object][2]** Congiguration parameters [Optional][tbd].
+-   `config` **[Object][2]** Congiguration parameters [Optional].
+    -   `config.skipVp8PayloadHeader` **[Boolean][3]** Sends the vp8 payload header in clear (Note: it will be applied to all video frames as encoded chunks does not contain codec info yet).
 
-Returns **[Promise][3]&lt;[Client][4]>** Promise that resolves to the client object when the web worker is initialized.
+Returns **[Promise][4]&lt;[Client][5]>** Promise that resolves to the client object when the web worker is initialized.
 
 ## Client
 
@@ -29,15 +30,15 @@ Set the sender encryption key.
 
 #### Parameters
 
--   `key` **([ArrayBuffer][5] \| [Uint8Array][6] | CryptoKey)** 32 bytes encryption key. If the value is a CryptoKey the algorithm must be "HKDF".
+-   `key` **([ArrayBuffer][6] \| [Uint8Array][7] | CryptoKey)** 32 bytes encryption key. If the value is a CryptoKey the algorithm must be "HKDF".
 
-Returns **[Promise][3]&lt;void>** Promise which will be resolved when the key is set on the web worker.
+Returns **[Promise][4]&lt;void>** Promise which will be resolved when the key is set on the web worker.
 
 ### ratchetSenderEncryptionKey
 
 Ratchert the sender encryption key.
 
-Returns **[Promise][3]&lt;void>** Promise which will be resolved when the key is ratcheted on the web worker.
+Returns **[Promise][4]&lt;void>** Promise which will be resolved when the key is ratcheted on the web worker.
 
 ### setSenderSigningKey
 
@@ -45,9 +46,9 @@ Set the sender signing key.
 
 #### Parameters
 
--   `key` **([ArrayBuffer][5] \| [Uint8Array][6] | CryptoKey)** Private key used for singing. If the value is a CryptoKey the algorithm must be "ECDSA".
+-   `key` **([ArrayBuffer][6] \| [Uint8Array][7] | CryptoKey)** Private key used for singing. If the value is a CryptoKey the algorithm must be "ECDSA".
 
-Returns **[Promise][3]&lt;void>** Promise which will be resolved when the signing key is set on the web worker.
+Returns **[Promise][4]&lt;void>** Promise which will be resolved when the signing key is set on the web worker.
 
 ### addReceiver
 
@@ -57,7 +58,7 @@ Add receiver for a remote sender.
 
 -   `receiverkKeyId` **[Number][1]** The remote senderId.
 
-Returns **[Promise][3]&lt;void>** Promise which will be resolved when the receiver is added on the web worker.
+Returns **[Promise][4]&lt;void>** Promise which will be resolved when the receiver is added on the web worker.
 
 ### setReceiverEncryptionKey
 
@@ -66,9 +67,9 @@ Set the receiver encryption key associated to a remote sender.
 #### Parameters
 
 -   `receiverkKeyId` **[Number][1]** The remote senderId.
--   `key` **([ArrayBuffer][5] \| [Uint8Array][6] | CryptoKey)** 32 bytes encryption key. If the value is a CryptoKey the algorithm must be "HKDF".
+-   `key` **([ArrayBuffer][6] \| [Uint8Array][7] | CryptoKey)** 32 bytes encryption key. If the value is a CryptoKey the algorithm must be "HKDF".
 
-Returns **[Promise][3]&lt;void>** Promise which will be resolved when the key is set on the web worker.
+Returns **[Promise][4]&lt;void>** Promise which will be resolved when the key is set on the web worker.
 
 ### setReceiverVerifyKey
 
@@ -77,9 +78,9 @@ Set the receiver signing key associated to a remote sender.
 #### Parameters
 
 -   `receiverkKeyId` **[Number][1]** The remote senderId.
--   `key` **([ArrayBuffer][5] \| [Uint8Array][6] | CryptoKey)** Private key used for singing. If the value is a CryptoKey the algorithm must be "ECDSA".
+-   `key` **([ArrayBuffer][6] \| [Uint8Array][7] | CryptoKey)** Private key used for singing. If the value is a CryptoKey the algorithm must be "ECDSA".
 
-Returns **[Promise][3]&lt;void>** Promise which will be resolved when the signing key is set on the web worker.
+Returns **[Promise][4]&lt;void>** Promise which will be resolved when the signing key is set on the web worker.
 
 ### deleteReceiver
 
@@ -89,7 +90,7 @@ Remove receiver for a remote sender.
 
 -   `receiverkKeyId` **[Number][1]** The remote senderId.
 
-Returns **[Promise][3]&lt;void>** Promise which will be resolved when the receiver is removed on the web worker.
+Returns **[Promise][4]&lt;void>** Promise which will be resolved when the receiver is removed on the web worker.
 
 ### encrypt
 
@@ -97,7 +98,7 @@ Encrypt frames for a RTCRtpSender.
 
 #### Parameters
 
--   `id` **[String][7]** An unique identifier associated to this sender (for example transceiver.mid).
+-   `id` **[String][8]** An unique identifier associated to this sender (for example transceiver.mid).
 -   `sender` **RTCRtpSender** The sender object, associated track must be not null.
 
 ### decrypt
@@ -106,7 +107,7 @@ Decrypt frames fpr a RTCPRtpReceiver.
 
 #### Parameters
 
--   `id` **[String][7]** An unique identifier associated to this sender (for example transceiver.mid), it will be used for the authentication and signing events.
+-   `id` **[String][8]** An unique identifier associated to this sender (for example transceiver.mid), it will be used for the authentication and signing events.
 -   `receiver` **RTCRtpReceiver** The receiver object.
 
 ### close
@@ -117,12 +118,14 @@ Close client and terminate web worker.
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[4]: #client
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+[5]: #client
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
+
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

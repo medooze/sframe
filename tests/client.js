@@ -1,7 +1,7 @@
 import {SFrame}	from "../Client.js";
 import {Utils}	from "../lib/Utils.js";
 
-tape.test("context", async function(suite){
+tape.test("client", async function(suite){
 	
 	await suite.test("api",async function(test) {
 		

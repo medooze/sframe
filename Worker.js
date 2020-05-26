@@ -1,4 +1,5 @@
 import {Context} from "./lib/Context.js";
+import {VP8PayloadHeader}  from "./lib/VP8PayloadHeader.js";
 import {Utils} from "./lib/Utils.js";
 
 class TaskQueue
@@ -73,14 +74,24 @@ onmessage = async (event) => {
 				//Create transform stream foo encrypting
 				const transformStream = new TransformStream({
 					transform: async (chunk, controller)=>{
+						//Nothing in clear
+						let skip = 0;
+						//Check if it is video and we are skipping vp8 payload header
+						if (kind=="video" && context.isSkippingVp8PayloadHeader())
+						{
+							//Get VP8 header
+							const vp8 = VP8PayloadHeader.parse(buffer);
+							//Skip it
+							skip = vp8.byteLength;
+						}
 						//Enqueue task
 						tasks.enqueue (
-							context.encrypt(kind, id, chunk.data),
+							context.encrypt(kind, id, chunk.data, skip),
 							(encrypted) => {
 								//Set back encrypted payload
 								chunk.data = encrypted.buffer;
 								//write back
-								controller.enqueue(chunk);
+								controller.enqueue(chunk.data);
 							},
 							(error)=>{
 								//TODO: handle errors
@@ -105,9 +116,19 @@ onmessage = async (event) => {
 				//Create transform stream for encrypting
 				const transformStream = new TransformStream({
 					transform: async (chunk, controller)=>{
+						//Nothing in clear
+						let skip = 0;
+						//Check if it is video and we are skipping vp8 payload header
+						if (kind=="video" && context.isSkippingVp8PayloadHeader())
+						{
+							//Get VP8 header
+							const vp8 = VP8PayloadHeader.parse(chunk.data);
+							//Skip it
+							skip = vp8.byteLength;
+						}
 						//Enqueue task
 						tasks.enqueue (
-							context.decrypt(kind, id, chunk.data),
+							context.decrypt(kind, id, chunk.data, skip),
 							(decrypted) => {
 								//Set back decrypted payload
 								chunk.data = decrypted.buffer;

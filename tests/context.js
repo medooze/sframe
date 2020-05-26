@@ -71,6 +71,40 @@ tape.test("context", async function(suite){
 		
 	});
 	
+	await suite.test("100 frames video skipping 4",async function(test){
+		
+		test.plan(100);
+		
+		const shared = Utils.fromHex("12345678901234567890123456789012");
+		const keyPair = await window.crypto.subtle.generateKey (
+			{
+				name: "ECDSA",
+				namedCurve: "P-521"
+			},
+			false,
+			["sign", "verify"]
+		);
+		const sender = new Context(0);
+		const receiver = new Context(1);
+		
+		await sender.setSenderEncryptionKey(shared);
+		await sender.setSenderSigningKey (keyPair.privateKey);
+		
+		receiver.addReceiver(0);
+		await receiver.setReceiverEncryptionKey(0,shared);
+		await receiver.setReceiverVerifyKey(0,keyPair.publicKey);
+		
+		///Should encrypt and sign
+		for (let i=0;i<100;++i)
+		{
+			const frame = Utils.fromHex("deadbeafcacadebaca"+i);
+			const encrypted = await sender.encrypt("video",0,frame,4);
+			const decrypted = await receiver.decrypt("video",0,encrypted,4);
+			test.same(Utils.toHex(frame),Utils.toHex (decrypted));
+		}
+		
+	});
+	
 	await suite.test("two senders 1 reciever",async function(test){
 		
 		test.plan(2);

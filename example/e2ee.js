@@ -36,8 +36,12 @@ async function connect()
 	const receiverId = 1;
 	
 	//Create contexts
-	const senderClient   = await SFrame.createClient(senderId);
-	const receiverClient = await SFrame.createClient(receiverId);
+	const senderClient   = await SFrame.createClient(senderId, {
+		skipVp8PayloadHeader : true
+	});
+	const receiverClient = await SFrame.createClient(receiverId, {
+		skipVp8PayloadHeader : true
+	});
 	
 	await senderClient.setSenderEncryptionKey(shared);
 	await senderClient.setSenderSigningKey(keyPair.privateKey);

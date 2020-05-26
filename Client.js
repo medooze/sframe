@@ -13,7 +13,8 @@ export const SFrame =
 	 * This method will create client which communicates with web worker in which the SFrame context will be executed.
 	 * @memberof SFrame
 	 * @param {Number} senderId - Numeric id for this sender.
-	 * @param {Object} config - Congiguration parameters [Optional] [TBD].
+	 * @param {Object} config - Congiguration parameters [Optional].
+	 * @param {Boolean} config.skipVp8PayloadHeader - Sends the vp8 payload header in clear (Note: it will be applied to all video frames as encoded chunks does not contain codec info yet).
 	 * @returns {Promise<Client>} Promise that resolves to the client object when the web worker is initialized.
 	 */
 	createClient : async function(senderId,config) 
