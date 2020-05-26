@@ -195,7 +195,7 @@ class Client extends EventTarget
 	 * Encrypt frames for a RTCRtpSender.
 	 * 
 	 * @param {String} id - An unique identifier associated to this sender (for example transceiver.mid).
-	 * @param {RTCRtpSender] sender - The sender object, associated track must be not null.
+	 * @param {RTCRtpSender} sender - The sender object, associated track must be not null.
 	 */
 	async encrypt(id,sender)
 	{
@@ -215,7 +215,7 @@ class Client extends EventTarget
 	 * Decrypt frames fpr a RTCPRtpReceiver.
 	 * 
 	 * @param {String} id - An unique identifier associated to this sender (for example transceiver.mid), it will be used for the authentication and signing events.
-	 * @param {RTCRtpReceiver] receiver - The receiver object.
+	 * @param {RTCRtpReceiver} receiver - The receiver object.
 	 */
 	async decrypt(id,receiver)
 	{

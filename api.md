@@ -98,7 +98,7 @@ Encrypt frames for a RTCRtpSender.
 #### Parameters
 
 -   `id` **[String][7]** An unique identifier associated to this sender (for example transceiver.mid).
--   `sender`  
+-   `sender` **RTCRtpSender** The sender object, associated track must be not null.
 
 ### decrypt
 
@@ -107,7 +107,7 @@ Decrypt frames fpr a RTCPRtpReceiver.
 #### Parameters
 
 -   `id` **[String][7]** An unique identifier associated to this sender (for example transceiver.mid), it will be used for the authentication and signing events.
--   `receiver`  
+-   `receiver` **RTCRtpReceiver** The receiver object.
 
 ### close
 
