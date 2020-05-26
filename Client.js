@@ -59,7 +59,7 @@ class Client extends EventTarget
 		this.transId = 1;
 		this.transactions = new Map();
 		
-		//Focus face when metadata is received
+		//Listen for worker messages
 		this.worker.addEventListener("message",async (event)=>{
 			//Get data
 			const data = event.data;
