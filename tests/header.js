@@ -15,6 +15,8 @@ tape.test("Header",function(suite){
 		parse("1001caca","1001,s:0,k:0,c:1");
 		parse("9001caca","9001,s:1,k:0,c:1");
 		parse("1101caca","1101,s:0,k:1,c:1");
+		parse("1201caca","1201,s:0,k:2,c:1");
+		parse("1301caca","1301,s:0,k:3,c:1");
 		
 		parse("40ff000000caca","40ff000000,s:0,k:0,c:ff000000");
 		parse("40ff010203caca","40ff010203,s:0,k:0,c:ff010203");
@@ -46,6 +48,10 @@ tape.test("Header",function(suite){
 		test.same(Utils.toHex(Header.generate(false,1,0)), "1100");
 		test.same(Utils.toHex(Header.generate(false,1,1)), "1101");
 		test.same(Utils.toHex(Header.generate(true ,1,1)), "9101");
+		
+		test.same(Utils.toHex(Header.generate(false,2,0)), "1200");
+		test.same(Utils.toHex(Header.generate(false,3,1)), "1301");
+		
 		
 		test.same(Utils.toHex(Header.generate(false,1,255)), "11ff");
 		test.same(Utils.toHex(Header.generate(false,1,255)), "11ff");
@@ -83,9 +89,18 @@ tape.test("Header",function(suite){
 		test.same(Utils.toHex(Header.generate(false,0xaabbcc,255)), "1baabbccff");
 		test.same(Utils.toHex(Header.generate(false,0xaabbcc,255)), "1baabbccff");
 		test.same(Utils.toHex(Header.generate(true ,0xaabbcc,255)), "9baabbccff");
+		
+		
+		test.same(Utils.toHex(Header.generate(true ,Header.MaxKeyId,0)), "9dffffffffff00");
 
 		test.end();
 	});
 	
+	suite.test("generate invalid",function(test){
+		//This should be invalid
+		test.throws(() => Header.generate(false,-1,0));
+		test.throws(() => Header.generate(false,Header.MaxKeyId+1,0));
+		test.end();
+	});
 	suite.end();
 });
