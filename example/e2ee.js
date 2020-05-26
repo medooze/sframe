@@ -24,12 +24,12 @@ async function connect()
 	const sender	= window.sender   = new RTCPeerConnection({
 		forceEncodedVideoInsertableStreams: true,
 		forceEncodedAudioInsertableStreams: true,
-		forceEncodedInsertableStreams: true
+		encodedInsertableStreams: true
 	});
 	const receiver	= window.receiver = new RTCPeerConnection({
 		forceEncodedVideoInsertableStreams: true,
 		forceEncodedAudioInsertableStreams: true,
-		forceEncodedInsertableStreams: true
+		encodedInsertableStreams: true
 	});
 	
 	const senderId = 0;
