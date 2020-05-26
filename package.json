@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docs": "documentation build Client.js --shallow -o api.md -f md --markdown-toc false"
   },
   "repository": {
     "type": "git",
