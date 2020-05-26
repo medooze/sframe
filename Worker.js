@@ -25,7 +25,7 @@ class TaskQueue
 			//Nothing
 			return;
 		//Running
-		this.running = true
+		this.running = true;
 		//Wait for first
 		while(this.tasks.length)
 		{
@@ -36,13 +36,13 @@ class TaskQueue
 				this.tasks[0].callback(result); 
 			} catch(e) {
 				//Run error callback
-				this.tasks[0].error(result); 
+				this.tasks[0].error(e); 
 			}
 			//Remove task from queue
 			this.tasks.shift();
 		}
 		//Ended
-		this.running = false
+		this.running = false;
 	}
 }
 let context; 
