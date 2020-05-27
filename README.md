@@ -1,5 +1,4 @@
-# SFrame library
-
+# SFrame.js 
 Pure javascript library implementing the SFrame end to end encryption based on webcrypto. 
 
 ## Differences from sframe current draft
