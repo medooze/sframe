@@ -7,7 +7,7 @@ tape.test("client", async function(suite){
 		
 		test.plan(1);
 		
-		const shared = Utils.fromHex("12345678901234567890123456789012");
+		const shared = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
 		const keyPair = await window.crypto.subtle.generateKey (
 			{
 				name: "ECDSA",

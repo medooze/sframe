@@ -34,7 +34,9 @@ async function transferKey(key)
 		return await crypto.subtle.exportKey("pkcs8", key);
 	if (key instanceof CryptoKey)
 		return await crypto.subtle.exportKey("raw", key);
-	return new ArrayBuffer(key);
+	if (key instanceof Uint8Array)
+		return key.buffer.slice(0);
+	return key.slice(0);
 }
 
 
@@ -87,8 +89,13 @@ class Client extends EventTarget
 				* @argument {String} id - The id for the associated RTCRtpReceiver
 				* @argument {Number} senderId - The senderId of the authenticated sender received.
 				*/
+				//Create event
+				const event = new Event(data.event.name);
+				//Set id and senderId
+				event.id	= data.event.data.id;
+				event.senderId	= data.event.data.senderId;
 				//Disptach event
-				this.dispatchEvent(new Event(data.event.name, data.event.data));
+				this.dispatchEvent(event);
 			}
 		});
 		//Private method

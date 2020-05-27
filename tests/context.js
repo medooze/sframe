@@ -7,7 +7,7 @@ tape.test("context", async function(suite){
 		
 		test.plan(100);
 		
-		const shared = Utils.fromHex("12345678901234567890123456789012");
+		const shared = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
 		const keyPair = await window.crypto.subtle.generateKey (
 			{
 				name: "ECDSA",
@@ -41,7 +41,7 @@ tape.test("context", async function(suite){
 		
 		test.plan(100);
 		
-		const shared = Utils.fromHex("12345678901234567890123456789012");
+		const shared = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
 		const keyPair = await window.crypto.subtle.generateKey (
 			{
 				name: "ECDSA",
@@ -75,7 +75,7 @@ tape.test("context", async function(suite){
 		
 		test.plan(100);
 		
-		const shared = Utils.fromHex("12345678901234567890123456789012");
+		const shared = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
 		const keyPair = await window.crypto.subtle.generateKey (
 			{
 				name: "ECDSA",
@@ -109,8 +109,8 @@ tape.test("context", async function(suite){
 		
 		test.plan(2);
 		
-		const shared1 = Utils.fromHex("12345678901234567890123456789012");
-		const shared2 = Utils.fromHex("22222222222222222222222222222222");
+		const shared1 = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
+		const shared2 = Utils.fromHex("2222222222222222222222222222222212345678901234567890123456789012");
 		
 		const receiver = new Context(0);
 		const sender1  = new Context(1);
@@ -139,8 +139,8 @@ tape.test("context", async function(suite){
 		
 		test.plan(2);
 		
-		const shared1 = Utils.fromHex("12345678901234567890123456789012");
-		const shared2 = Utils.fromHex("22222222222222222222222222222222");
+		const shared1 = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
+		const shared2 = Utils.fromHex("2222222222222222222222222222222212345678901234567890123456789012");
 		
 		const receiver = new Context(0);
 		const sender1  = new Context(1);
@@ -160,6 +160,7 @@ tape.test("context", async function(suite){
 		const encrypted1 = await sender1.encrypt("audio",0,frame1);
 		try {
 			const decrypted1 = await receiver.decrypt("audio",0,encrypted1);
+			test.fail();
 		} catch (e){
 			test.pass();
 		}
@@ -168,6 +169,7 @@ tape.test("context", async function(suite){
 		const encrypted2 = await sender2.encrypt("audio",0,frame2);
 		try {
 			const decrypted2 = await receiver.decrypt("audio",0,encrypted2);
+			test.fail();
 		} catch (e) {
 			test.pass();
 		}
@@ -177,7 +179,7 @@ tape.test("context", async function(suite){
 		
 		test.plan(5);
 		
-		const shared = Utils.fromHex("12345678901234567890123456789012");
+		const shared = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
 		const keyPair = await window.crypto.subtle.generateKey (
 			{
 				name: "ECDSA",
@@ -214,7 +216,7 @@ tape.test("context", async function(suite){
 		
 		test.plan(5);
 		
-		const shared = Utils.fromHex("12345678901234567890123456789012");
+		const shared = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
 		const keyPair = await window.crypto.subtle.generateKey (
 			{
 				name: "ECDSA",
