@@ -26,7 +26,7 @@ class TaskQueue
 			return;
 		//Running
 		this.running = true;
-		//Wait for first
+		//Run all pending tasks
 		while(this.tasks.length)
 		{
 			try {
@@ -80,7 +80,7 @@ onmessage = async (event) => {
 						if (kind=="video" && context.isSkippingVp8PayloadHeader())
 						{
 							//Get VP8 header
-							const vp8 = VP8PayloadHeader.parse(buffer);
+							const vp8 = VP8PayloadHeader.parse(chunk.data);
 							//Skip it
 							skip = vp8.byteLength;
 						}
@@ -91,7 +91,7 @@ onmessage = async (event) => {
 								//Set back encrypted payload
 								chunk.data = encrypted.buffer;
 								//write back
-								controller.enqueue(chunk.data);
+								controller.enqueue(chunk);
 							},
 							(error)=>{
 								//TODO: handle errors
@@ -112,7 +112,7 @@ onmessage = async (event) => {
 				//Last reveiced senderId
 				let senderId = -1;
 				//Get event data
-				const{id, kind, readableStream,writableStream} = args;
+				const{id, kind, readableStream, writableStream} = args;
 				//Create transform stream for encrypting
 				const transformStream = new TransformStream({
 					transform: async (chunk, controller)=>{
