@@ -251,4 +251,51 @@ tape.test("context", async function(suite){
 		
 	});
 
+	await suite.test("Replay attack",async function(test){
+		
+		test.plan(200);
+		
+		const shared = Utils.fromHex("1234567890123456789012345678901212345678901234567890123456789012");
+		const keyPair = await window.crypto.subtle.generateKey (
+			{
+				name: "ECDSA",
+				namedCurve: "P-521"
+			},
+			false,
+			["sign", "verify"]
+		);
+		const sender = new Context(0);
+		const receiver = new Context(1);
+		
+		await sender.setSenderEncryptionKey(shared);
+		await sender.setSenderSigningKey (keyPair.privateKey);
+		
+		receiver.addReceiver(0);
+		await receiver.setReceiverEncryptionKey(0,shared);
+		await receiver.setReceiverVerifyKey(0,keyPair.publicKey);
+		
+		const ordered = [];
+		///Should encrypt and sign
+		for (let i=0;i<200;++i)
+		{
+			const frame = Utils.fromHex("deadbeafcacadebaca"+i);
+			const encrypted = await sender.encrypt("video",0,frame,4);
+			ordered.push(encrypted);
+		}
+		
+		for (let i=200;i>0;--i)
+		{
+			try 
+			{
+				//Decrypt
+				await receiver.decrypt("video",0,ordered[i-1],4);
+				//Should work for the first 128
+				test.ok(i>=200-128);
+			} catch (e) {
+				//Should fail for the rest
+				test.ok(i<200-128);
+			}
+		}
+		
+	});
 });
