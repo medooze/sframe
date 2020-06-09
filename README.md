@@ -7,7 +7,7 @@ Pure javascript library implementing the SFrame end to end encryption based on w
  - IV contains the keyId and the frame counter to ensure uniquenes when using same encryption key for all participants.
  - keysIds are limited to 5 bytes long to avoid javascirpt signed/unsigned issues.
  - Option to skip the vp8 payload header and send it in clear.
- - Ed25591 is not used for sign/verify as it is not available in webcrypto, ECDSA with P-512 is used instead.
+ - Ed25519 is not used for sign/verify as it is not available in webcrypto, ECDSA with P-512 is used instead.
  
  ## Keying
  
