@@ -15,8 +15,6 @@ Pure javascript library implementing the SFrame end to end encryption based on w
  
  Unlike the sframe draft, this library requires each participant to have a numeric `senderId` that will be used as `keyId` in the sframe  header. 
  
- This allows to have the same encryption key across all the participants (instead of a per-participant key) while ensuring that the `IV` is used only once per key. Note that using a key per participant is strongly recommended.
- 
  ## API
  
  Check [api.md](/api.md)
