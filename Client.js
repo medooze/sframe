@@ -210,7 +210,7 @@ class Client extends EventTarget
 		 //We need the media kind until it is set as metadata on the chunk frame
 		const kind = sender.track.kind;
 		//Get the sender insertable streams
-		const {readableStream,writableStream} = sender.createEncodedStreams ? sender.createEncodedStreams() : 
+		const {readable: readableStream, writable: writableStream} = sender.createEncodedStreams ? sender.createEncodedStreams() :
 			sender.createEncodedVideoStreams ? sender.createEncodedVideoStreams() : sender.createEncodedAudioStreams();
 		//Pass to worker
 		return this.postMessage("encrypt",
@@ -230,7 +230,7 @@ class Client extends EventTarget
 		//We need the media kind until it is set as metadata on the chunk frame
 		const kind = receiver.track.kind;
 		//Get the receiver insertable streams
-		const {readableStream,writableStream} = receiver.createEncodedStreams ? receiver.createEncodedStreams() : 
+		const {readable: readableStream, writable: writableStream} = receiver.createEncodedStreams ? receiver.createEncodedStreams() :
 			receiver.createEncodedVideoStreams ? receiver.createEncodedVideoStreams() : receiver.createEncodedAudioStreams();
 		//Pass to worker
 		return this.postMessage("decrypt",
