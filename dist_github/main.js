@@ -7,7 +7,7 @@
 		exports["sframe"] = factory();
 	else
 		root["sframe"] = factory();
-})(window, function() {
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};

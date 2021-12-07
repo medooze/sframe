@@ -19,5 +19,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist_github'),
     library: 'sframe',
     libraryTarget: 'umd',
+    globalObject: 'this',
   },
 };
