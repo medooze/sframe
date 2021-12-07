@@ -1,15 +1,14 @@
-//Get worker url
-const url = new URL(import.meta.url).pathname.replace("Client","Worker");
+import SframeWorker from './Worker.js';
 
 /**
  * SFrame library
  *  @namespace Sframe
  */
-export const SFrame = 
+export const SFrame =
 {
 	/**
 	 * Create a new SFrame client context.
-	 * 
+	 *
 	 * This method will create client which communicates with web worker in which the SFrame context will be executed.
 	 * @memberof SFrame
 	 * @param {Number} senderId - Numeric id for this sender.
@@ -17,7 +16,7 @@ export const SFrame =
 	 * @param {Boolean} config.skipVp8PayloadHeader - Sends the vp8 payload header in clear (Note: it will be applied to all video frames as encoded chunks does not contain codec info yet).
 	 * @returns {Promise<Client>} Promise that resolves to the client object when the web worker is initialized.
 	 */
-	createClient : async function(senderId,config) 
+	createClient : async function(senderId,config)
 	{
 		//Create client
 		const client = new Client();
@@ -53,14 +52,14 @@ class Client extends EventTarget
 	constructor()
 	{
 		 super();
-		 
+
 		//Create new worker
-		this.worker = new Worker(url, {type: "module"});
-		
+		this.worker = new SframeWorker();
+
 		//Cutrent transactions
 		this.transId = 1;
 		this.transactions = new Map();
-		
+
 		//Listen for worker messages
 		this.worker.addEventListener("message",async (event)=>{
 			//Get data
@@ -68,7 +67,7 @@ class Client extends EventTarget
 			//If it is a transaction response
 			if (data.transId)
 			{
-				//Get transaction 
+				//Get transaction
 				const transaction = this.transactions.get(data.transId);
 				//Delete transaction
 				this.transactions.delete(data.transId);
@@ -111,37 +110,37 @@ class Client extends EventTarget
 			});
 		};
 	}
-	
-	async init(senderId, config) 
+
+	async init(senderId, config)
 	{
 		return this.postMessage("init", {senderId, config});
 	}
 
 	/**
 	 * Set the sender encryption key.
-	 * 
+	 *
 	 * @param {ArrayBuffer|Uint8Array|CryptoKey} key - 32 bytes encryption key. If the value is a CryptoKey the algorithm must be "HKDF".
 	 * @returns {Promise<void>} Promise which will be resolved when the key is set on the web worker.
 	 */
-	async setSenderEncryptionKey(key) 
+	async setSenderEncryptionKey(key)
 	{
 		const transfered = await transferKey(key);
 		return this.postMessage("setSenderEncryptionKey", [transfered], [transfered]);
 	}
-	
+
 	/**
 	 * Ratchert the sender encryption key.
-	 * 
+	 *
 	 * @returns {Promise<void>} Promise which will be resolved when the key is ratcheted on the web worker.
 	 */
 	async ratchetSenderEncryptionKey()
 	{
 		return this.postMessage("ratchetSenderEncryptionKey");
 	}
-	
+
 	/**
 	 * Set the sender signing key.
-	 * 
+	 *
 	 * @param {ArrayBuffer|Uint8Array|CryptoKey} key - Private key used for singing. If the value is a CryptoKey the algorithm must be "ECDSA".
 	 * @returns {Promise<void>} Promise which will be resolved when the signing key is set on the web worker.
 	 */
@@ -150,10 +149,10 @@ class Client extends EventTarget
 		const transfered = await transferKey(key);
 		return this.postMessage("setSenderSigningKey", [transfered]);
 	}
-	
+
 	/**
 	 * Add receiver for a remote sender.
-	 * 
+	 *
 	 * @param {Number} receiverkKeyId - The remote senderId.
 	 * @returns {Promise<void>} Promise which will be resolved when the receiver is added on the web worker.
 	 */
@@ -161,10 +160,10 @@ class Client extends EventTarget
 	{
 		return this.postMessage("addReceiver", [receiverkKeyId]);
 	}
-	
+
 	/**
 	 * Set the receiver encryption key associated to a remote sender.
-	 * 
+	 *
 	 * @param {Number} receiverkKeyId - The remote senderId.
 	 * @param {ArrayBuffer|Uint8Array|CryptoKey} key - 32 bytes encryption key. If the value is a CryptoKey the algorithm must be "HKDF".
 	 * @returns {Promise<void>} Promise which will be resolved when the key is set on the web worker.
@@ -174,10 +173,10 @@ class Client extends EventTarget
 		const transfered = await transferKey(key);
 		return this.postMessage("setReceiverEncryptionKey", [receiverkKeyId, transfered], [transfered]);
 	}
-	
+
 	/**
 	 * Set the receiver signing key associated to a remote sender.
-	 * 
+	 *
 	 * @param {Number} receiverkKeyId - The remote senderId.
 	 * @param {ArrayBuffer|Uint8Array|CryptoKey} key - Private key used for singing. If the value is a CryptoKey the algorithm must be "ECDSA".
 	 * @returns {Promise<void>} Promise which will be resolved when the signing key is set on the web worker.
@@ -187,10 +186,10 @@ class Client extends EventTarget
 		const transfered = await transferKey(key);
 		return this.postMessage("setReceiverVerifyKey", [receiverkKeyId, transfered], [transfered]);
 	}
-	
+
 	/**
 	 * Remove receiver for a remote sender.
-	 * 
+	 *
 	 * @param {Number} receiverkKeyId - The remote senderId.
 	 * @returns {Promise<void>} Promise which will be resolved when the receiver is removed on the web worker.
 	 */
@@ -198,10 +197,10 @@ class Client extends EventTarget
 	{
 		return this.postMessage("deleteReceiver", [receiverkKeyId]);
 	}
-	
+
 	/**
 	 * Encrypt frames for a RTCRtpSender.
-	 * 
+	 *
 	 * @param {String} id - An unique identifier associated to this sender (for example transceiver.mid).
 	 * @param {RTCRtpSender} sender - The sender object, associated track must be not null.
 	 */
@@ -218,10 +217,10 @@ class Client extends EventTarget
 			[readableStream, writableStream]
 		);
 	}
-	
+
 	/**
 	 * Decrypt frames fpr a RTCPRtpReceiver.
-	 * 
+	 *
 	 * @param {String} id - An unique identifier associated to this sender (for example transceiver.mid), it will be used for the authentication and signing events.
 	 * @param {RTCRtpReceiver} receiver - The receiver object.
 	 */
@@ -238,7 +237,7 @@ class Client extends EventTarget
 			[readableStream, writableStream]
 		);
 	}
-	
+
 	/**
 	 * Close client and terminate web worker.
 	 */
@@ -246,7 +245,7 @@ class Client extends EventTarget
 	{
 		//Terminate worker
 		this.worker.terminate();
-		
+
 		//End all pending transactions
 		for (let transaction of this.transactions.values())
 			//Reject with terminated error
@@ -255,4 +254,3 @@ class Client extends EventTarget
 		this.transactions.clear();
 	}
 };
-
