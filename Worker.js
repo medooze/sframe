@@ -150,7 +150,13 @@ onmessage = async (event) => {
 								}
 							},
 							(error)=>{
-								//TODO: handle errors
+								postMessage ({event: {
+									name	: "decryptFailed",
+									data	: {
+										id	 : id,
+										senderId : senderId
+									}
+								}});
 							}
 						);
 					}
