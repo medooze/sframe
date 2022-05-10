@@ -148,15 +148,30 @@ onmessage = async (event) => {
 										}
 									}});
 								}
+								if (decrypted.decryptionRestored) {
+									postMessage({
+										event: {
+											name: "decryptionRestored",
+											data: {
+												id,
+												senderId,
+											},
+										},
+									});
+								}
 							},
-							(error)=>{
-								postMessage ({event: {
-									name	: "decryptFailed",
-									data	: {
-										id	 : id,
-										senderId : senderId
-									}
-								}});
+							(error) => {
+								if (error.message === 'decryptFailed') {
+									postMessage({
+										event: {
+											name: "decryptFailed",
+											data: {
+												id,
+												senderId,
+											},
+										},
+								});
+								}
 							}
 						);
 					}

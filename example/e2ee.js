@@ -78,11 +78,21 @@ async function connect()
 
 	await receiverClient.addReceiver(senderId);
 	await receiverClient.setReceiverEncryptionKey(senderId,shared2);
+	window.fixKey = () => {
+		receiverClient.setReceiverEncryptionKey(senderId,shared);
+	}
+	window.breakKey = () => {
+		console.log('setting key2')
+		receiverClient.setReceiverEncryptionKey(senderId,shared2);
+	}
 	await receiverClient.setReceiverVerifyKey(senderId,keyPair.publicKey);
 
 	receiverClient.addEventListener("authenticated",event=>console.log("Authenticated receiver " + event.id + " for sender " + event.senderId));
 	receiverClient.addEventListener("decryptFailed", () => {
 		console.log('decrypt failed');
+	});
+	receiverClient.addEventListener("decryptionRestored", () => {
+		console.log('decrypt restored');
 	});
 
 
