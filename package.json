@@ -5,7 +5,8 @@
   "main": "dist_github/main.js",
   "scripts": {
     "docs": "documentation build Client.js --shallow -o api.md -f md --markdown-toc false",
-    "build": "webpack --mode=development"
+    "build": "webpack --mode=development",
+    "example": "webpack serve --mode=development --config=./webpack.app.config.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "webpack": "^4.46.0",
     "webpack-cli": "^4",
+    "webpack-dev-server": "^4.9.0",
     "worker-loader": "^3.0.8"
   }
 }
