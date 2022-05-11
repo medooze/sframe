@@ -1,6 +1,9 @@
-import {SFrame}	from "../Client.js";
-import {Utils}	from "../lib/Utils.js";
+import {SFrame}	from "../index.js";
 
+const senderPasswordInput = document.getElementById('senderPassword');
+const receiverPasswordInput = document.getElementById('receiverPassword');
+const senderPasswordForm = document.getElementById('senderPasswordForm');
+const receiverPasswordForm = document.getElementById('receiverPasswordForm');
 
 async function connect()
 {
@@ -34,8 +37,12 @@ async function connect()
 	}
 
 	//Get keys
-	const shared  = await getRoomKey("roomId","password");
-	const shared2  = await getRoomKey("roomId","password1");
+	const shared  = await getRoomKey("roomId", "password");
+	[senderPasswordInput, receiverPasswordInput].forEach((input) => {
+		input.value = 'password';
+		input.parentElement.classList.add('is-dirty');
+});
+
 	const keyPair = await window.crypto.subtle.generateKey (
 		{
 			name: "ECDSA",
@@ -77,14 +84,19 @@ async function connect()
 	await senderClient.setSenderSigningKey(keyPair.privateKey);
 
 	await receiverClient.addReceiver(senderId);
-	await receiverClient.setReceiverEncryptionKey(senderId,shared2);
-	window.fixKey = () => {
-		receiverClient.setReceiverEncryptionKey(senderId,shared);
-	}
-	window.breakKey = () => {
-		console.log('setting key2')
-		receiverClient.setReceiverEncryptionKey(senderId,shared2);
-	}
+	await receiverClient.setReceiverEncryptionKey(senderId,shared);
+
+	senderPasswordForm.addEventListener('submit', async (e) =>  {
+		e.preventDefault();
+		const newKey = await getRoomKey("roomId", senderPasswordInput.value);
+		senderClient.setSenderEncryptionKey(newKey);
+	})
+	receiverPasswordForm.addEventListener('submit', async (e) =>  {
+		e.preventDefault();
+		const newKey = await getRoomKey("roomId", receiverPasswordInput.value);
+		receiverClient.setReceiverEncryptionKey(senderId, newKey);
+	})
+
 	await receiverClient.setReceiverVerifyKey(senderId,keyPair.publicKey);
 
 	receiverClient.addEventListener("authenticated",event=>console.log("Authenticated receiver " + event.id + " for sender " + event.senderId));
