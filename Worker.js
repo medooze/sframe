@@ -1,50 +1,13 @@
+import debounce from "lodash/debounce";
 import {Context} from "./lib/Context.js";
 import {VP8PayloadHeader}  from "./lib/VP8PayloadHeader.js";
 import {Utils} from "./lib/Utils.js";
+import {TaskQueue} from "./lib/TaskQueue.js";
 
-class TaskQueue
-{
-	constructor()
-	{
-		this.tasks = [];
-		this.running = false;
-	}
-	
-	enqueue(promise,callback,error)
-	{
-		//enqueue task
-		this.tasks.push({promise,callback,error});
-		//Try run 
-		this.run();
-	}
-	
-	async run()
-	{
-		//If already running 
-		if (this.running)
-			//Nothing
-			return;
-		//Running
-		this.running = true;
-		//Run all pending tasks
-		while(this.tasks.length)
-		{
-			try {
-				//Wait for first promise to finish
-				const result = await this.tasks[0].promise;
-				//Run callback
-				this.tasks[0].callback(result); 
-			} catch(e) {
-				//Run error callback
-				this.tasks[0].error(e); 
-			}
-			//Remove task from queue
-			this.tasks.shift();
-		}
-		//Ended
-		this.running = false;
-	}
-}
+const postDecryptStatusMessage = debounce((message) => {
+	postMessage(message)
+},  400);
+
 let context; 
 
 onmessage = async (event) => {
@@ -149,7 +112,7 @@ onmessage = async (event) => {
 									}});
 								}
 								if (decrypted.decryptionRestored) {
-									postMessage({
+									postDecryptStatusMessage({
 										event: {
 											name: "decryptionRestored",
 											data: {
@@ -162,7 +125,7 @@ onmessage = async (event) => {
 							},
 							(error) => {
 								if (error.message === 'decryptFailed') {
-									postMessage({
+									postDecryptStatusMessage({
 										event: {
 											name: "decryptFailed",
 											data: {

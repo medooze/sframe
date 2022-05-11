@@ -24,5 +24,8 @@
     "webpack-cli": "^4",
     "webpack-dev-server": "^4.9.0",
     "worker-loader": "^3.0.8"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }
