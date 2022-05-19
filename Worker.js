@@ -89,8 +89,9 @@ onmessage = async (event) => {
 							//Skip it
 							skip = vp8.byteLength;
 						}
+
 						//Enqueue task
-						tasks.enqueue (
+						tasks.enqueue(
 							context.decrypt(kind, id, chunk.data, skip),
 							(decrypted) => {
 								//Set back decrypted payload
