@@ -6,7 +6,7 @@ import {TaskQueue} from "./lib/TaskQueue.js";
 
 const postDecryptStatusMessage = debounce((message) => {
 	postMessage(message)
-},  1000, {leading: false, trailing: true });
+},  1000, { leading: false, trailing: true });
 
 let context; 
 
