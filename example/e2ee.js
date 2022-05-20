@@ -107,7 +107,6 @@ async function connect()
 		console.log('decrypt restored');
 	});
 
-
 	//Set it on the local video
 	local.srcObject = stream;
 	local.play();
