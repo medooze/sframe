@@ -1,9 +1,9 @@
 const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    'lib': './index.js',
     'app': './example/e2ee.js',
   },
   devServer: {
@@ -12,6 +12,10 @@ module.exports = {
     port: 9000,
     open: true,
   },
+  watchOptions: {
+    poll: true,
+  },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -24,8 +28,15 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'example/index.html'
+    })
+  ],
   output: {
     path: path.resolve(__dirname, 'example/dist/'),
+    publicPath: '/',
+    filename: 'app.js',
   },
   devtool: 'source-map',
 };

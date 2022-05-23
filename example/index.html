@@ -3,7 +3,6 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-		<script type="module" src="./dist/app.js"></script>
 		<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 		<style>
 			html {
@@ -92,9 +91,21 @@
 	<div id="container">
 		<div class="container-video">Sender
 			<video id="local" muted></video>
+				<form id="senderPasswordForm">
+				<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+					<input class="mdl-textfield__input" type="text" id="senderPassword">
+					<label class="mdl-textfield__label" for="sample3">Sender Password:</label>
+				</div>
+			</form>
 		</div>
 		<div class="container-video">Receiver
 			<video id="remote"></video>
+			<form id="receiverPasswordForm">
+				<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+					<input class="mdl-textfield__input" type="text" id="receiverPassword">
+					<label class="mdl-textfield__label" for="sample3">Receiver Password:</label>
+				</div>
+			</form>
 		</div>
 		<dialog class="ready-dialog mdl-dialog">
 		<h4 class="mdl-dialog__title">Ready to test sframe e2ee?</h4>
