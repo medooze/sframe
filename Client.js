@@ -14,6 +14,7 @@ export const SFrame =
 	 * @param {Number} senderId - Numeric id for this sender.
 	 * @param {Object} config - Congiguration parameters [Optional].
 	 * @param {Boolean} config.skipVp8PayloadHeader - Sends the vp8 payload header in clear (Note: it will be applied to all video frames as encoded chunks does not contain codec info yet).
+	 * @param {Boolean} config.displayFailedDecryptionFrames - Will display frames even when decryption has failed, leading to a garbled video being displayed.
 	 * @returns {Promise<Client>} Promise that resolves to the client object when the web worker is initialized.
 	 */
 	createClient : async function(senderId,config)

@@ -15,6 +15,7 @@ This method will create client which communicates with web worker in which the S
 -   `senderId` **[Number][1]** Numeric id for this sender.
 -   `config` **[Object][2]** Congiguration parameters [Optional].
     -   `config.skipVp8PayloadHeader` **[Boolean][3]** Sends the vp8 payload header in clear (Note: it will be applied to all video frames as encoded chunks does not contain codec info yet).
+    -   `config.displayFailedDecryptionFrames` **[Boolean][3]** Will display frames even when decryption has failed, leading to a garbled video being displayed.
 
 Returns **[Promise][4]&lt;[Client][5]>** Promise that resolves to the client object when the web worker is initialized.
 

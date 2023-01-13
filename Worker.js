@@ -23,7 +23,7 @@ onmessage = async (event) => {
 			case "init":
 			{
 				//Get info
-				const {senderId, config} = args;
+				const {senderId, config = {}} = args;
 				//Crate context
 				context = new Context(senderId, config);
 				break;
@@ -125,6 +125,9 @@ onmessage = async (event) => {
 								}
 							},
 							(error) => {
+								if (context.config.displayFailedDecryptionFrames) {
+									controller.enqueue(chunk);
+								}
 								if (error.message === 'decryptFailed') {
 									postDecryptStatusMessage({
 										event: {
